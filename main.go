@@ -99,6 +99,7 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 							Embeds: []*discordgo.MessageEmbed{
 								respondEmbed,
 							},
+							Flags: discordgo.MessageFlagsEphemeral,
 						},
 					})
 
