@@ -66,6 +66,7 @@ func Ready(s *discordgo.Session, m *discordgo.Ready) {
 	}
 
 	log.Done("BloqGo is online!")
+	log.Print("change this part")
 }
 
 func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
