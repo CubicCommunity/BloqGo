@@ -32,7 +32,7 @@ var Ping *include.Command = &include.Command{
 		if err == nil {
 			latency := time.Since(created).Milliseconds()
 
-			var respondEmbed = &discordgo.MessageEmbed{
+			respondEmbed := &discordgo.MessageEmbed{
 				Title: fmt.Sprintf("%s Ping", assets.Icons.Info),
 				Color: assets.Colors.Primary,
 				Fields: []*discordgo.MessageEmbedField{

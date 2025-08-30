@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
 
+	"BloqGo/assets"
 	_ "BloqGo/commands"
 	"BloqGo/log"
 	"BloqGo/registry"
@@ -69,8 +71,8 @@ func Ready(s *discordgo.Session, m *discordgo.Ready) {
 func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.Bot {
 		return
-	} else if m.Content == "!ping" {
-		s.ChannelMessageSend(m.ChannelID, "Pong!")
+	} else {
+		log.Debug("Received message in channel")
 	}
 }
 
@@ -85,6 +87,24 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 				if err != nil {
 					log.Error(err.Error())
+
+					respondEmbed := &discordgo.MessageEmbed{
+						Description: fmt.Sprintf("%s There was an error while executing this command.", assets.Icons.XMark),
+						Color:       assets.Colors.Secondary,
+					}
+
+					e := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+						Type: discordgo.InteractionResponseChannelMessageWithSource,
+						Data: &discordgo.InteractionResponseData{
+							Embeds: []*discordgo.MessageEmbed{
+								respondEmbed,
+							},
+						},
+					})
+
+					if e != nil {
+						log.Error(e.Error())
+					}
 				}
 
 				break
