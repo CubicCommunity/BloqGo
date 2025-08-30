@@ -8,13 +8,13 @@ I've got you.
 ---
 
 ## About
-*BloqGo* is a small spin-off of Bloqbit meant to provide utility and fun features! A smaller, more lightweight, and easier to grasp edition of the original project.
+*BloqGo* is a small spin-off of Bloqbit meant to provide fun and utility features! A smaller, more lightweight, and easier to grasp edition of the original project. Made with love.
 
 ---
 
 ### Changelog
 ###### What's new?!
-**[📜 View the latest updates and patches](changelog.md)**
+**[📜 View the latest updates and patches](CHANGELOG.md)**
 
 ### Issues
 ###### What's wrong?!
