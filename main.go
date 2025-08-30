@@ -7,10 +7,10 @@ import (
 	"strings"
 	"syscall"
 
-	"BloqGo/assets"
-	_ "BloqGo/commands"
-	"BloqGo/log"
-	"BloqGo/registry"
+	"github.com/CubicCommunity/BloqGo/assets"
+	_ "github.com/CubicCommunity/BloqGo/commands"
+	"github.com/CubicCommunity/BloqGo/log"
+	"github.com/CubicCommunity/BloqGo/registry"
 
 	"github.com/bwmarrin/discordgo"
 )

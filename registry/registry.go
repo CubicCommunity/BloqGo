@@ -1,7 +1,7 @@
 package registry
 
 import (
-	"BloqGo/include"
+	"github.com/CubicCommunity/BloqGo/include"
 )
 
 var Commands []*include.Command

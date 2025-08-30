@@ -1,6 +1,6 @@
-module BloqGo
+module github.com/CubicCommunity/BloqGo
 
-go 1.25.0
+go 1.25
 
 require (
 	github.com/bwmarrin/discordgo v0.29.0

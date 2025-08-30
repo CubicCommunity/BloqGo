@@ -1,9 +1,9 @@
 package commands
 
 import (
-	"BloqGo/assets"
-	"BloqGo/include"
-	"BloqGo/registry"
+	"github.com/CubicCommunity/BloqGo/assets"
+	"github.com/CubicCommunity/BloqGo/include"
+	"github.com/CubicCommunity/BloqGo/registry"
 
 	"fmt"
 	"time"
