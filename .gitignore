@@ -1,0 +1,70 @@
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go workspace files
+go.work
+go.work.sum
+
+# Go module files (optional if you want to exclude local changes)
+go.sum
+
+# Binaries
+bin/
+build/
+dist/
+*.o
+*.a
+
+# Logs and runtime files
+*.log
+*.pid
+*.lock
+
+# IDE/editor configs
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Dependency folders (if vendoring)
+vendor/
+
+# Test coverage
+*.coverprofile
+*.cov
+coverage.out
+
+# Environment and config
+.env
+.env.*
+*.bat
+*.local.json
+config.yaml
+config.toml
+
+# Temporary files
+*.tmp
+*.temp
+*.old
+
+# Mod pipeline artifacts (if applicable)
+mods/
+assets/cache/
+*.modcache
+*.modlog
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
