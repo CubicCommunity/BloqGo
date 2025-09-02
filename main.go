@@ -74,6 +74,7 @@ func Ready(s *discordgo.Session, m *discordgo.Ready) {
 		log.Error("Developer logging webhook credentials not found")
 	} else {
 		_, err := s.WebhookExecute(whId, whToken, true, &discordgo.WebhookParams{
+			AvatarURL: s.State.User.AvatarURL("512"),
 			Embeds: []*discordgo.MessageEmbed{
 				{
 					Author: &discordgo.MessageEmbedAuthor{
@@ -91,11 +92,13 @@ func Ready(s *discordgo.Session, m *discordgo.Ready) {
 
 		if err != nil {
 			log.Error(err.Error())
+		} else {
+			log.Info("Sent developer log webhook for startup")
 		}
 	}
 
 	log.Done("BloqGo is online!")
-	log.Print("change this part")
+	log.Print("change this part") // ptero egg lol
 }
 
 func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
