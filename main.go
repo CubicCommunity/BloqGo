@@ -68,6 +68,32 @@ func Ready(s *discordgo.Session, m *discordgo.Ready) {
 		}
 	}
 
+	whId := os.Getenv("MAIN_LOG_WH_ID")
+	whToken := os.Getenv("MAIN_LOG_WH_TOKEN")
+	if whId == "" || whToken == "" {
+		log.Error("Developer logging webhook credentials not found")
+	} else {
+		_, err := s.WebhookExecute(whId, whToken, true, &discordgo.WebhookParams{
+			Embeds: []*discordgo.MessageEmbed{
+				{
+					Author: &discordgo.MessageEmbedAuthor{
+						Name: "Service Status",
+					},
+					Description: fmt.Sprintf("%s **%s** is now __online__", assets.Icons.Check, s.State.User.Username),
+					Color:       assets.Colors.Primary,
+					Footer: &discordgo.MessageEmbedFooter{
+						Text:    s.State.User.Username,
+						IconURL: s.State.User.AvatarURL("512"),
+					},
+				},
+			},
+		})
+
+		if err != nil {
+			log.Error(err.Error())
+		}
+	}
+
 	log.Done("BloqGo is online!")
 	log.Print("change this part")
 }
