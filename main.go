@@ -36,7 +36,7 @@ func main() {
 	dg.Identify.Intents = discordgo.IntentsAll
 
 	log.Debug("Connecting client...")
-	dg.AddHandler(Ready)
+	dg.AddHandlerOnce(Ready)
 
 	err = dg.Open()
 	if err != nil {
