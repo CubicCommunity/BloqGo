@@ -51,22 +51,17 @@ var Say *include.Command = &include.Command{
 		if message != nil {
 			msg := message.StringValue()
 
-			sayEmbed := &discordgo.MessageEmbed{
+			respondEmbed := &discordgo.MessageEmbed{
 				Description: msg,
 				Color:       assets.Colors.Primary,
 			}
 
 			channel := c.GetOption("channel")
 
-			respondEmbed := &discordgo.MessageEmbed{
-				Description: fmt.Sprintf("%s Message sent.", assets.Icons.Check),
-				Color:       assets.Colors.Primary,
-			}
-
 			if channel != nil {
 				chnl := channel.ChannelValue(s)
 
-				_, err := s.ChannelMessageSendEmbed(chnl.ID, sayEmbed)
+				msg, err := s.ChannelMessageSendEmbed(chnl.ID, respondEmbed)
 
 				if err != nil {
 					return err
@@ -76,17 +71,25 @@ var Say *include.Command = &include.Command{
 							Type: discordgo.InteractionResponseChannelMessageWithSource,
 							Data: &discordgo.InteractionResponseData{
 								Embeds: []*discordgo.MessageEmbed{
-									respondEmbed,
+									{
+										Description: fmt.Sprintf("%s Message sent.", assets.Icons.Check),
+										Color:       assets.Colors.Primary,
+									},
 								},
 								Flags: discordgo.MessageFlagsEphemeral,
 							},
 						})
 					} else {
+						url := fmt.Sprintf("https://discord.com/channels/%s/%s/%s", chnl.GuildID, chnl.ID, msg.ID)
+
 						return s.InteractionRespond(i, &discordgo.InteractionResponse{
 							Type: discordgo.InteractionResponseChannelMessageWithSource,
 							Data: &discordgo.InteractionResponseData{
 								Embeds: []*discordgo.MessageEmbed{
-									respondEmbed,
+									{
+										Description: fmt.Sprintf("%s Message sent in %s.", assets.Icons.Check, url),
+										Color:       assets.Colors.Primary,
+									},
 								},
 							},
 						})
@@ -97,7 +100,7 @@ var Say *include.Command = &include.Command{
 					Type: discordgo.InteractionResponseChannelMessageWithSource,
 					Data: &discordgo.InteractionResponseData{
 						Embeds: []*discordgo.MessageEmbed{
-							sayEmbed,
+							respondEmbed,
 						},
 					},
 				})
