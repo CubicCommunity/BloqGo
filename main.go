@@ -32,6 +32,9 @@ func main() {
 		return
 	}
 
+	log.Debug("Adding intents...")
+	dg.Identify.Intents = discordgo.IntentsAll
+
 	log.Debug("Connecting client...")
 	dg.AddHandler(Ready)
 
@@ -71,9 +74,9 @@ func Ready(s *discordgo.Session, m *discordgo.Ready) {
 
 func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.Bot {
-		return
+		log.Debug("Detected bot message in channel in guild of ID %s", m.GuildID)
 	} else {
-		log.Debug("Received message in channel")
+		log.Debug("Received message in channel in guild of ID %s", m.GuildID)
 	}
 }
 
