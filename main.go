@@ -111,9 +111,9 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	if i.Type == discordgo.InteractionApplicationCommand {
-		log.Debug("Command /%s used", i.ApplicationCommandData().Name)
-
 		data := i.ApplicationCommandData()
+		log.Debug("Command /%s used", data.Name)
+
 		for _, cmd := range registry.Commands {
 			if cmd.Data.Name == data.Name {
 				err := cmd.Handler(s, &data, i.Interaction)
@@ -144,5 +144,7 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 				break
 			}
 		}
+	} else {
+		log.Error("Command '%s' did not match any accepted integration types")
 	}
 }

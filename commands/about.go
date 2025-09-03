@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"runtime"
 
 	"github.com/CubicCommunity/BloqGo/assets"
 	"github.com/CubicCommunity/BloqGo/include"
@@ -42,8 +43,15 @@ var About *include.Command = &include.Command{
 				Title:       fmt.Sprintf("BloqGo `v%s`", ver),
 				Description: fmt.Sprintf("Running under Discord bot client **`%s`**`#%s` (`%s`) on shard **#%v**", s.State.User.Username, s.State.User.Discriminator, s.State.User.ID, s.ShardID),
 				Color:       assets.Colors.Primary,
+				Fields: []*discordgo.MessageEmbedField{
+					{
+						Name:   "Go Version",
+						Value:  fmt.Sprintf("`%s`", runtime.Version()),
+						Inline: false,
+					},
+				},
 				Footer: &discordgo.MessageEmbedFooter{
-					Text: "About command in the works - expect more information added soon.",
+					Text: "This command is in the works - expect more information added soon.",
 				},
 			}
 

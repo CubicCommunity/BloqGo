@@ -16,17 +16,19 @@ func Version() (string, error) {
 	if semver.IsValid(fmt.Sprintf("v%s", VERSION)) {
 		return VERSION, nil
 	} else {
-		cwd, err := os.Getwd()
+		exePath, err := os.Executable()
 
 		if err != nil {
-			return cwd, err
+			return "", err
 		} else {
-			v, err := os.ReadFile(filepath.Join(cwd, "..", "VERSION"))
+			projectRoot := filepath.Dir(filepath.Dir(exePath))
 
-			if err != nil {
-				return "", err
+			v, e := os.ReadFile(filepath.Join(projectRoot, "VERSION"))
+
+			if e != nil {
+				return "", e
 			} else {
-				return strings.TrimSpace(string(v)), err
+				return strings.TrimSpace(string(v)), e
 			}
 		}
 	}
