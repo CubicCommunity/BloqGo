@@ -41,12 +41,22 @@ var About *include.Command = &include.Command{
 					IconURL: s.State.User.AvatarURL("512"),
 				},
 				Title:       fmt.Sprintf("BloqGo `v%s`", ver),
-				Description: fmt.Sprintf("Running under Discord bot client **`%s`**`#%s` (`%s`) on shard **#%v**", s.State.User.Username, s.State.User.Discriminator, s.State.User.ID, s.ShardID),
+				Description: fmt.Sprintf("Running as Discord bot client **`%s`**`#%s` (`%s`) on shard **#%v**", s.State.User.Username, s.State.User.Discriminator, s.State.User.ID, s.ShardID),
 				Color:       assets.Colors.Primary,
 				Fields: []*discordgo.MessageEmbedField{
 					{
 						Name:   "Go Version",
 						Value:  fmt.Sprintf("`%s`", runtime.Version()),
+						Inline: true,
+					},
+					{
+						Name:   "Uptime",
+						Value:  fmt.Sprintf("%s • <t:%v:R>", include.GetUptimeFormatted(), include.GetUptime()),
+						Inline: true,
+					},
+					{
+						Name:   fmt.Sprintf("%s Need Help?", assets.Icons.Self),
+						Value:  "Join **[dsc.gg/bloqbit](https://www.dsc.gg/bloqbit)**",
 						Inline: false,
 					},
 				},

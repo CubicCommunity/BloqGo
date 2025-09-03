@@ -1,6 +1,7 @@
 package assets
 
 var Icons = struct {
+	Self        string
 	Check       string
 	XMark       string
 	Info        string
@@ -18,6 +19,7 @@ var Icons = struct {
 	NoEntry     string
 	Blank       string
 }{
+	Self:        "<:BloqGo:1411140704427708556>",
 	Check:       "<:bb_check:1407517838540931253>",
 	XMark:       "<:bb_xmark:1407517869901873264>",
 	Info:        "<:bb_info:1407517847399305266>",
