@@ -112,8 +112,5 @@ var Say *include.Command = &include.Command{
 }
 
 func init() {
-	registry.Register(&include.Command{
-		Data:    Say.Data,
-		Handler: Say.Handler,
-	})
+	registry.Register(Say)
 }

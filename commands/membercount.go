@@ -73,8 +73,5 @@ var MemberCount *include.Command = &include.Command{
 }
 
 func init() {
-	registry.Register(&include.Command{
-		Data:    MemberCount.Data,
-		Handler: MemberCount.Handler,
-	})
+	registry.Register(MemberCount)
 }

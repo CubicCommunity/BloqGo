@@ -1,20 +1,20 @@
 package commands
 
 import (
+	"fmt"
+
 	"github.com/CubicCommunity/BloqGo/assets"
 	"github.com/CubicCommunity/BloqGo/include"
+	"github.com/CubicCommunity/BloqGo/log"
 	"github.com/CubicCommunity/BloqGo/registry"
-
-	"fmt"
-	"time"
 
 	"github.com/bwmarrin/discordgo"
 )
 
-var Ping *include.Command = &include.Command{
+var About *include.Command = &include.Command{
 	Data: &discordgo.ApplicationCommand{
-		Name:        "ping",
-		Description: "Ping the bot, test its latency.",
+		Name:        "about",
+		Description: "View detailed information about the current installation of BloqGo.",
 		IntegrationTypes: &[]discordgo.ApplicationIntegrationType{
 			discordgo.ApplicationIntegrationUserInstall,
 			discordgo.ApplicationIntegrationGuildInstall,
@@ -27,25 +27,23 @@ var Ping *include.Command = &include.Command{
 		NSFW: include.NSFW(false),
 	},
 	Handler: func(s *discordgo.Session, c *discordgo.ApplicationCommandInteractionData, i *discordgo.Interaction) error {
-		created, err := discordgo.SnowflakeTimestamp(i.ID)
+		ver, err := include.Version()
 
-		if err == nil {
-			latency := time.Since(created).Milliseconds()
+		if err != nil {
+			return err
+		} else {
+			log.Info("Sending about message in guild of ID %s", i.GuildID)
 
 			respondEmbed := &discordgo.MessageEmbed{
-				Title: fmt.Sprintf("%s Ping", assets.Icons.Info),
-				Color: assets.Colors.Primary,
-				Fields: []*discordgo.MessageEmbedField{
-					{
-						Name:   "Latency",
-						Value:  fmt.Sprintf("%vms", latency),
-						Inline: false,
-					},
-					{
-						Name:   "API Latency",
-						Value:  fmt.Sprintf("%vms", s.HeartbeatLatency().Milliseconds()),
-						Inline: false,
-					},
+				Author: &discordgo.MessageEmbedAuthor{
+					Name:    s.State.User.Username,
+					IconURL: s.State.User.AvatarURL("512"),
+				},
+				Title:       fmt.Sprintf("BloqGo `v%s`", ver),
+				Description: fmt.Sprintf("Running under Discord bot client **`%s`**`#%s` (`%s`) on shard **#%v**", s.State.User.Username, s.State.User.Discriminator, s.State.User.ID, s.ShardID),
+				Color:       assets.Colors.Primary,
+				Footer: &discordgo.MessageEmbedFooter{
+					Text: "About command in the works - expect more information added soon.",
 				},
 			}
 
@@ -55,15 +53,12 @@ var Ping *include.Command = &include.Command{
 					Embeds: []*discordgo.MessageEmbed{
 						respondEmbed,
 					},
-					Flags: discordgo.MessageFlagsEphemeral,
 				},
 			})
-		} else {
-			return err
 		}
 	},
 }
 
 func init() {
-	registry.Register(Ping)
+	registry.Register(About)
 }

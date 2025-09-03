@@ -99,8 +99,5 @@ var Avatar *include.Command = &include.Command{
 }
 
 func init() {
-	registry.Register(&include.Command{
-		Data:    Avatar.Data,
-		Handler: Avatar.Handler,
-	})
+	registry.Register(Avatar)
 }

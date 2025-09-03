@@ -8,19 +8,19 @@ import (
 )
 
 var LogLevel int = 0
-var Cached bool = false
+var cached bool = false
 
 const (
-	Reset  = "\033[0m"
-	Gray   = "\033[90m"
-	Blue   = "\033[34m"
-	Yellow = "\033[33m"
-	Red    = "\033[31m"
-	Green  = "\033[32m"
+	reset  = "\033[0m"
+	gray   = "\033[90m"
+	blue   = "\033[34m"
+	yellow = "\033[33m"
+	red    = "\033[31m"
+	green  = "\033[32m"
 )
 
 func getLogLevel() int {
-	if Cached {
+	if cached {
 		return LogLevel
 	} else {
 		level, done := os.LookupEnv("LOG_LEVEL")
@@ -39,12 +39,12 @@ func getLogLevel() int {
 			LogLevel = 0
 		}
 
-		Cached = true
+		cached = true
 		return LogLevel
 	}
 }
 
-func WriteConsole(color string, tag string, format any, a ...any) {
+func writeConsole(color string, tag string, format any, a ...any) {
 	utc := time.Now().UTC()
 	timeStamp := fmt.Sprintf("%s UTC", utc.Format(time.RFC3339))
 
@@ -62,41 +62,41 @@ func WriteConsole(color string, tag string, format any, a ...any) {
 		message = fmt.Sprint(format)
 	}
 
-	fmt.Println(timeStamp, level, message, Reset)
+	fmt.Println(timeStamp, level, message, reset)
 }
 
 func Debug(format any, a ...any) {
 	if getLogLevel() <= 0 {
-		WriteConsole(Gray, "DEBUG", format, a...)
+		writeConsole(gray, "DEBUG", format, a...)
 	}
 }
 
 func Info(format any, a ...any) {
 	if getLogLevel() <= 1 {
-		WriteConsole(Blue, "INFO", format, a...)
+		writeConsole(blue, "INFO", format, a...)
 	}
 }
 
 func Warn(format any, a ...any) {
 	if getLogLevel() <= 2 {
-		WriteConsole(Yellow, "WARN", format, a...)
+		writeConsole(yellow, "WARN", format, a...)
 	}
 }
 
 func Error(format any, a ...any) {
 	if getLogLevel() <= 3 {
-		WriteConsole(Red, "ERROR", format, a...)
+		writeConsole(red, "ERROR", format, a...)
 	}
 }
 
 func Done(format any, a ...any) {
 	if getLogLevel() <= 4 {
-		WriteConsole(Green, "DONE", format, a...)
+		writeConsole(green, "DONE", format, a...)
 	}
 }
 
 func Print(format any, a ...any) {
 	if getLogLevel() <= 5 {
-		WriteConsole(Reset, " LOG ", format, a...)
+		writeConsole(reset, " LOG ", format, a...)
 	}
 }
