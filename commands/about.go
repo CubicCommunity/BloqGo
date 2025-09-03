@@ -61,7 +61,7 @@ var About *include.Command = &include.Command{
 					},
 				},
 				Footer: &discordgo.MessageEmbedFooter{
-					Text: "This command is in the works - expect more information added soon.",
+					Text: "This command is in the works - expect more information to be added soon.",
 				},
 			}
 
