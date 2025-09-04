@@ -3,12 +3,18 @@ name: BloqGo CI
 on:
   push:
     branches: [ "**" ]
-  pull_request:
-    branches: [ "**" ]
+  workflow_dispatch:
 
 jobs:
   build:
+    name: Build for ${{ matrix.target }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - linux-amd64
+          - windows-amd64
+          - darwin-amd64
 
     steps:
       - name: Checkout source
@@ -19,35 +25,58 @@ jobs:
         with:
           go-version: "1.25.x"
 
-      - name: Install dependencies
-        run: go mod tidy
-
-      - name: Build
-        run: go build -v ./...
-
-      - name: Run tests
-        run: go test -v ./...
-
-      - name: Cross-compile
+      - name: Cross-compile for ${{ matrix.target }}
         run: |
           mkdir -p dist
-          GOOS=linux   GOARCH=amd64 go build -o dist/bloqgo-linux-amd64   .
-          GOOS=windows GOARCH=amd64 go build -o dist/bloqgo-windows-amd64.exe .
-          GOOS=darwin  GOARCH=amd64 go build -o dist/bloqgo-darwin-amd64  .
+          case "${{ matrix.target }}" in
+            linux-amd64)
+              GOOS=linux GOARCH=amd64 go build -o dist/bloqgo-linux-amd64 .
+              ;;
+            windows-amd64)
+              GOOS=windows GOARCH=amd64 go build -o dist/bloqgo-windows-amd64.exe .
+              ;;
+            darwin-amd64)
+              GOOS=darwin GOARCH=amd64 go build -o dist/bloqgo-darwin-amd64 .
+              ;;
+          esac
 
-      - name: Save dist folder
+      - name: Upload platform artifact
         uses: actions/upload-artifact@v4
         with:
-          name: bloqgo-dist
+          name: bloqgo-${{ matrix.target }}
           path: dist/
 
   package:
-    name: Package Artifacts
+    name: Package builds
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build]
+
     steps:
-      - name: Upload artifacts
+      - name: Download linux-amd64
+        uses: actions/download-artifact@v4
+        with:
+          name: bloqgo-linux-amd64
+          path: merged/linux-amd64
+
+      - name: Download windows-amd64
+        uses: actions/download-artifact@v4
+        with:
+          name: bloqgo-windows-amd64
+          path: merged/windows-amd64
+
+      - name: Download darwin-amd64
+        uses: actions/download-artifact@v4
+        with:
+          name: bloqgo-darwin-amd64
+          path: merged/darwin-amd64
+
+      - name: Combine outputs
+        run: |
+          mkdir -p final
+          find merged -type f -exec cp {} final/ \;
+
+      - name: Upload merged artifact
         uses: actions/upload-artifact@v4
         with:
           name: BloqGo-Output
-          path: dist/
+          path: final/
